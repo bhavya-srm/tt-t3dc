@@ -1,20 +1,18 @@
-<!---
-
-This file is used to generate your project datasheet. Please fill in the information below and delete any unused
-sections.
-
-You can also include images in this folder and reference them in the markdown. Each image must be less than
-512 kb in size, and the combined size of all images must be less than 1 MB.
--->
-
 ## How it works
 
-Explain how your project works
+Fixed-latency tick-to-trade decision core. Market data messages arrive
+byte-parallel on `ui_in`, framed by `SOP` and qualified by `BYTE_VALID`.
+The price field is compared against four preloaded thresholds, and the
+resulting fire signals appear on `uo_out` a constant number of valid
+cycles after `SOP`, independent of message content.
 
 ## How to test
 
-Explain how to use your project
+Drive `ui_in` with message bytes, one per clock, asserting `SOP` on the
+first byte and `BYTE_VALID` on each valid byte. Observe `LAT_MARKER`
+(`uo[5]`), which pulses a fixed number of cycles after every `SOP`.
 
 ## External hardware
 
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
+None. Optionally a logic analyser or PMOD-connected FPGA on the input
+pins for latency characterisation.
